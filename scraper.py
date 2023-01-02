@@ -12,18 +12,20 @@ def scrape(url):
     soup = BeautifulSoup(page.content, 'html.parser')
 
     # Find the menu for Brick City (Listed as 103)
-    result = soup.find(id="103")
-    menu = result.find("div", class_="ds-loc-title")
+    results = soup.find(id="103")
+
+    try:
+        # Get the menu for the day
+        menu = results.find("div", class_="menu-item").prettify()
+    except AttributeError:
+        # If the menu returns a NoneType, then there is no menu for that day
+        menu = "No menu available today"
 
     # Print the menu
-    print(menu.prettify())
+    print(menu)
 
 def main():
     scrape(url)
 
 if __name__ == "__main__":
     main()
-
-# This code currently does not work because no dining locations are open
-# https://stackoverflow.com/questions/53459163/scraping-from-dropdown-option-value-python-beautifulsoup
-# I need to change the dropdown value to get to a day where there actually is something on the menu
